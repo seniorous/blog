@@ -1,4 +1,292 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>少游的博客</title><description>去追寻吧，你所期待的那颗星</description><link>https://mizuki-sooty.vercel.app/</link><language>zh_CN</language><item><title>Git 实战指南：从分支管理到远程协作</title><link>https://mizuki-sooty.vercel.app/posts/git-practice-guide/</link><guid isPermaLink="true">https://mizuki-sooty.vercel.app/posts/git-practice-guide/</guid><description>从真实开发场景出发，梳理 Git 在分支管理、合并策略、撤销操作与远程协作中的核心实践。</description><pubDate>Tue, 24 Feb 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Git 实战指南：从分支管理到远程协作&lt;/h1&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>少游的博客</title><description>去追寻吧，你所期待的那颗星</description><link>https://mizuki-sooty.vercel.app/</link><language>zh_CN</language><item><title>Python3 核心概念回顾</title><link>https://mizuki-sooty.vercel.app/posts/python3-review/</link><guid isPermaLink="true">https://mizuki-sooty.vercel.app/posts/python3-review/</guid><description>回顾 Python3 中字典、列表、函数、模块、推导式、迭代器、生成器、装饰器等核心概念。</description><pubDate>Tue, 24 Feb 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;python回顾&lt;/h2&gt;
+&lt;p&gt;字典（键与值一一对应），列表（自由的数组），元组（只读列表，成员不变）
+列表需要注意的是extend，appendix，pop等
+字典（列表不可以作为键，因为其需要不可变）&lt;/p&gt;
+&lt;h3&gt;函数&lt;/h3&gt;
+&lt;p&gt;函数中需要理解的一点是变量与类型的区别：类型是真实存在的，变量只不过的指向类型的标签，所以python中的变量才可以自由变换。
+也是因此所以可变和不可变变量的根本区别是：
+修改可变变量的时候，是修改了类型本身，而修改不可变变量的时候，是修改了标签所引用的对象
+对象有类型，变量无类型&lt;/p&gt;
+&lt;h5&gt;局部变量与全局变量&lt;/h5&gt;
+&lt;p&gt;局部标签与全局标签，可以使用global进行遮蔽&lt;/p&gt;
+&lt;h5&gt;参数&lt;/h5&gt;
+&lt;p&gt;必备参数
+关键字参数
+这两个区别主要是传参的时候有没有显式的写出，如果没有，就会按照必备参数一个个按顺序填，关键字参数则可以在顺序不对的时候也自动匹配填入
+可变参数
+使用 * args把所有参数吸收
+默认参数
+如果不传就用默认值&lt;/p&gt;
+&lt;h3&gt;模块&lt;/h3&gt;
+&lt;p&gt;不要用from...import*（命名空间污染）
+直接import的时候，加入库名称.函数
+补充__name__函数
+一个模块被另一个程序第一次引入时，其主程序将运行。&lt;/p&gt;
+&lt;p&gt;如果我们想在模块被引入时，模块中的某一程序块不执行，我们可以用 &lt;strong&gt;name&lt;/strong&gt; 属性来使该程序块仅在该模块自身运行时执行。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#!/usr/bin/python3
+# Filename: using_name.py
+
+if __name__ == &apos;__main__&apos;:
+   print(&apos;程序自身在运行&apos;)
+else:
+   print(&apos;我来自另一模块&apos;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;运行输出如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ python using_name.py
+程序自身在运行
+
+$ python
+&amp;gt;&amp;gt;&amp;gt; import using_name
+我来自另一模块
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;说明：每个模块都有一个 &lt;code&gt;__name__&lt;/code&gt; 属性。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果模块是被直接运行，&lt;code&gt;__name__&lt;/code&gt; 的值为 &lt;code&gt;__main__&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;如果模块是被导入的，&lt;code&gt;__name__&lt;/code&gt; 的值为模块名。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;推导式&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;# 列表
+[out_exp_res for out_exp in input_list if condition]
+[函数 for 变量 in 列表 if 条件]
+
+# 字典
+{ key_expr: value_expr for value in collection if condition }
+
+# 集合
+{ expression for item in Sequence if conditional }
+
+# 元组
+(expression for item in Sequence if conditional)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;迭代器与生成器&lt;/h3&gt;
+&lt;h4&gt;iter()&lt;/h4&gt;
+&lt;p&gt;创建迭代器对象&lt;/p&gt;
+&lt;h4&gt;next()&lt;/h4&gt;
+&lt;p&gt;迭代器循环，可以使用 &lt;code&gt;raise StopIteration&lt;/code&gt; 来结束迭代&lt;/p&gt;
+&lt;h4&gt;生成器&lt;/h4&gt;
+&lt;h5&gt;yield&lt;/h5&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;产出值并暂停：&lt;/strong&gt; 当程序执行到 &lt;code&gt;yield&lt;/code&gt; 时，它会向调用者返回 &lt;code&gt;yield&lt;/code&gt; 后面的值，然后&lt;strong&gt;立刻暂停&lt;/strong&gt;在这一行代码，停止向下执行。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;保留运行状态：&lt;/strong&gt; 函数被暂停时，它内部所有的变量状态、指令指针等都会被完整保留下来。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;恢复执行：&lt;/strong&gt; 当我们下次再调用 &lt;code&gt;next()&lt;/code&gt; 方法请求数据时，代码会从上次 &lt;code&gt;yield&lt;/code&gt; 暂停的地方&lt;strong&gt;紧接着往下执行&lt;/strong&gt;，直到遇到下一个 &lt;code&gt;yield&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;def countdown(n):
+    while n &amp;gt; 0:
+        yield n
+        n -= 1
+
+# 创建生成器对象
+generator = countdown(5)
+
+# 通过迭代生成器获取值
+print(next(generator))  # 输出: 5
+print(next(generator))  # 输出: 4
+print(next(generator))  # 输出: 3
+
+# 使用 for 循环迭代生成器
+for value in generator:
+    print(value)  # 输出: 2 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;with 语句&lt;/h3&gt;
+&lt;p&gt;使用with来管理资源分布&lt;/p&gt;
+&lt;p&gt;想要使用with的对象需要有&lt;code&gt;__enter__&lt;/code&gt; 和&lt;code&gt;__exit__&lt;/code&gt;方法，帮助自动处理与释放资源&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 同时打开多个文件
+with open(&apos;input.txt&apos;, &apos;r&apos;) as infile, open(&apos;output.txt&apos;, &apos;w&apos;) as outfile:
+    content = infile.read()
+    outfile.write(content.upper())
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4&gt;最佳实践&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;优先使用 with 管理资源&lt;/strong&gt;：对于文件、网络连接、锁等资源，总是优先考虑使用 &lt;code&gt;with&lt;/code&gt; 语句&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;保持上下文简洁&lt;/strong&gt;：&lt;code&gt;with&lt;/code&gt; 块中的代码应该只包含与资源相关的操作&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;合理处理异常&lt;/strong&gt;：在自定义上下文管理器中，根据需求决定是否抑制异常&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;利用多个上下文&lt;/strong&gt;：Python 允许在单个 &lt;code&gt;with&lt;/code&gt; 语句中管理多个资源&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;lambda&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;lambda arguments: expression
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;numbers = [1, 2, 3, 4, 5]
+squared = list(map(lambda x: x**2, numbers))
+print(squared)  # 输出: [1, 4, 9, 16, 25]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;装饰器&lt;/h3&gt;
+&lt;h4&gt;函数装饰器&lt;/h4&gt;
+&lt;p&gt;Python 装饰器允许在不修改原有函数代码的基础上，动态地增加或修改函数的功能，装饰器本质上是一个接收函数作为输入并返回一个新的包装过后的函数的对象。
+本质上是接收函数返回wrapper&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def my_decorator(func):
+    def wrapper():
+        print(&quot;在原函数之前执行&quot;)
+        func()
+        print(&quot;在原函数之后执行&quot;)
+    return wrapper
+
+@my_decorator
+def say_hello():
+    print(&quot;Hello!&quot;)
+
+say_hello()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;疑问：return在这里起什么作用？
+外层return是my_decorator，作用是把被装饰函数替换成wrapper函数。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;加上括号 &lt;code&gt;wrapper()&lt;/code&gt;：意思是&quot;立刻执行这个函数，并把执行后的&lt;strong&gt;结果&lt;/strong&gt;交出去&quot;。&lt;/li&gt;
+&lt;li&gt;不加括号 &lt;code&gt;wrapper&lt;/code&gt;：意思是&quot;我不执行它，我把这个函数的**本体（遥控器）**直接交出去&quot;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;def my_decorator(func):
+    # 这里是外层函数
+    print(&quot;【额外逻辑】我在定义时就被执行了！&quot;)
+    return func  # 只能把原函数原封不动地退回去
+
+@my_decorator
+def greet(name):
+    print(f&quot;Hello, {name}!&quot;)
+
+# 当代码运行到上面 @my_decorator 那里时，屏幕上就已经打印了：
+# 【额外逻辑】我在定义时就被执行了！
+
+# 等你真正在下面调用函数时：
+greet(&quot;Alice&quot;)
+greet(&quot;Bob&quot;)
+
+# 屏幕上只会输出：
+# Hello, Alice!
+# Hello, Bob!
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;一般来说，这一块最关键的就是一个 return，和一个内部的内置函数wrapper()，在被定义的时候呢，它这个被装饰 F 就可以执行它这个里特，并且反将被装饰 F 替换成装饰后的函数。
+然后以后的话，当我们调用被装饰函数的时候，就是默认被替换成装饰后函数。遵循里面的逻辑，这个装饰后函数我们一般使用就是wrapper&lt;/p&gt;
+&lt;p&gt;所以在使用可变参数传参的时候，应该遵循这样一个原则：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;1. &lt;code&gt;*args&lt;/code&gt; (Arguments：位置参数打包器)&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;作用：&lt;/strong&gt; 负责把所有按顺序传入的参数，打包成一个&lt;strong&gt;元组 (Tuple)&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;示例：&lt;/strong&gt; 如果你调用 &lt;code&gt;func(&quot;Alice&quot;, 25, &quot;Beijing&quot;)&lt;/code&gt;，那么在函数内部，&lt;code&gt;args&lt;/code&gt; 就会变成 &lt;code&gt;(&quot;Alice&quot;, 25, &quot;Beijing&quot;)&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;2. &lt;code&gt;**kwargs&lt;/code&gt; (Keyword Arguments：关键字参数打包器)&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;作用：&lt;/strong&gt; 负责把所有带有名字的参数（如 &lt;code&gt;name=&quot;Alice&quot;&lt;/code&gt;），打包成一个&lt;strong&gt;字典 (Dictionary)&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;示例：&lt;/strong&gt; 如果你调用 &lt;code&gt;func(name=&quot;Alice&quot;, age=25)&lt;/code&gt;，那么在函数内部，&lt;code&gt;kwargs&lt;/code&gt; 就会变成 &lt;code&gt;{&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 25}&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;类的装饰器&lt;/h4&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;strong&gt;概念&lt;/strong&gt;&lt;/th&gt;
+&lt;th&gt;&lt;strong&gt;核心标志&lt;/strong&gt;&lt;/th&gt;
+&lt;th&gt;&lt;strong&gt;作用目标&lt;/strong&gt;&lt;/th&gt;
+&lt;th&gt;&lt;strong&gt;核心优势&lt;/strong&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;类装饰器 (用类写)&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;实现 &lt;code&gt;__init__&lt;/code&gt; 和 &lt;code&gt;__call__&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;装饰普通的函数&lt;/td&gt;
+&lt;td&gt;极其擅长管理复杂的&lt;strong&gt;状态&lt;/strong&gt;（如计数、缓存）。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;装饰类的装饰器&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;接收参数 &lt;code&gt;cls&lt;/code&gt; 代替 &lt;code&gt;func&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;装饰一个 Class&lt;/td&gt;
+&lt;td&gt;批量给类&lt;strong&gt;动态添加属性或方法&lt;/strong&gt;，减少重复的模板代码。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;code&gt;__call__&lt;/code&gt; 等于 wrapper&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Retry:
+    def __init__(self, max_times=3):
+        # 1. 装配阶段的第一步：记录装饰器传进来的参数
+        print(f&quot;【初始化】设置最大重试次数为: {max_times}&quot;)
+        self.max_times = max_times
+
+    def __call__(self, func):
+        # 2. 装配阶段的第二步：接收原函数，并制造替身
+        print(f&quot;【装配时】正在给函数 {func.__name__} 穿上重试外套...&quot;)
+
+        def wrapper(*args, **kwargs):
+            # 3. 调用阶段：真正的重试逻辑
+            for attempt in range(1, self.max_times + 1):
+                try:
+                    print(f&quot;  -&amp;gt; 第 {attempt} 次尝试执行...&quot;)
+                    result = func(*args, **kwargs)
+                    print(&quot;  -&amp;gt; 执行成功！&quot;)
+                    return result  # 成功就直接返回结果，结束循环
+
+                except Exception as e:
+                    print(f&quot;  -&amp;gt; 失败了，错误原因: {e}&quot;)
+
+            print(f&quot;❌ 警告：已达到最大重试次数 {self.max_times}，彻底放弃。&quot;)
+
+        return wrapper  # 把替身交出去
+
+# === 使用场景 ===
+print(&quot;---- 代码开始加载 ----&quot;)
+
+@Retry(max_times=3)
+def unstable_network_request():
+    # 模拟一个不稳定的网络请求，我们让它故意报错
+    raise ConnectionError(&quot;网络波动，连接超时！&quot;)
+
+print(&quot;\n---- 准备调用 ----&quot;)
+unstable_network_request()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;注意这里存在的身份信息问题：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def my_decorator(func):
+    @wraps(func)  # 用这个让wrap继承身份信息
+    def wrapper(*args, **kwargs):
+        &quot;&quot;&quot;我是 wrapper 函数的注释&quot;&quot;&quot;
+        return func(*args, **kwargs)
+    return wrapper
+
+@my_decorator
+def calculate_tax(amount):
+    &quot;&quot;&quot;这是一个用来计算税务的复杂核心函数&quot;&quot;&quot;
+    return amount * 0.2
+
+# 此时我们想打印一下函数的名字和注释文档
+print(calculate_tax.__name__)
+print(calculate_tax.__doc__)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;strong&gt;装饰器&lt;/strong&gt;&lt;/th&gt;
+&lt;th&gt;&lt;strong&gt;第一个参数&lt;/strong&gt;&lt;/th&gt;
+&lt;th&gt;&lt;strong&gt;能否访问实例属性 (self.xxx)?&lt;/strong&gt;&lt;/th&gt;
+&lt;th&gt;&lt;strong&gt;能否访问类属性 (cls.xxx)?&lt;/strong&gt;&lt;/th&gt;
+&lt;th&gt;&lt;strong&gt;最常见使用场景&lt;/strong&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;(普通方法)&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;self&lt;/code&gt; (实例)&lt;/td&gt;
+&lt;td&gt;✅ 能&lt;/td&gt;
+&lt;td&gt;✅ 能 (通过 &lt;code&gt;self.__class__&lt;/code&gt;)&lt;/td&gt;
+&lt;td&gt;操作或修改单个对象的具体状态。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;&lt;code&gt;@property&lt;/code&gt;&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;self&lt;/code&gt; (实例)&lt;/td&gt;
+&lt;td&gt;✅ 能&lt;/td&gt;
+&lt;td&gt;✅ 能&lt;/td&gt;
+&lt;td&gt;把方法伪装成只读属性，动态计算值或保护数据。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;&lt;code&gt;@classmethod&lt;/code&gt;&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;cls&lt;/code&gt; (类)&lt;/td&gt;
+&lt;td&gt;❌ 不能&lt;/td&gt;
+&lt;td&gt;✅ 能&lt;/td&gt;
+&lt;td&gt;作为&quot;备用构造函数&quot;，或修改全局类状态。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;&lt;code&gt;@staticmethod&lt;/code&gt;&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;(无固定参数)&lt;/td&gt;
+&lt;td&gt;❌ 不能&lt;/td&gt;
+&lt;td&gt;❌ 不能&lt;/td&gt;
+&lt;td&gt;编写与类逻辑相关，但纯独立的工具函数。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+</content:encoded></item><item><title>Git 实战指南：从分支管理到远程协作</title><link>https://mizuki-sooty.vercel.app/posts/git-practice-guide/</link><guid isPermaLink="true">https://mizuki-sooty.vercel.app/posts/git-practice-guide/</guid><description>从真实开发场景出发，梳理 Git 在分支管理、合并策略、撤销操作与远程协作中的核心实践。</description><pubDate>Tue, 24 Feb 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Git 实战指南：从分支管理到远程协作&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;本文从实际开发场景出发，梳理 Git 在日常工作中最常遇到的操作与决策。不讲花哨技巧，只聚焦「遇到这种情况该怎么办」。&lt;/p&gt;
 &lt;/blockquote&gt;
