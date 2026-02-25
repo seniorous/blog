@@ -24,7 +24,7 @@ const SITE_TIMEZONE = 8; //设置你的网站时区 from -12 to 12 default in UT
 export const siteConfig: SiteConfig = {
 	title: "少游的博客",
 	subtitle: "去追寻吧，你所期待的那颗星",
-	siteURL: "/", // 请替换为你的站点URL，以斜杠结尾
+	siteURL: "https://mizuki-sooty.vercel.app/", // 请替换为你的站点URL，以斜杠结尾
 	siteStartDate: "2026-02-24", // 站点开始运行日期，用于站点统计组件计算运行天数
 
 	timeZone: SITE_TIMEZONE,
