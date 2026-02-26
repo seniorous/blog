@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>少游的博客</title><description>去追寻吧，你所期待的那颗星</description><link>https://mizuki-sooty.vercel.app/</link><language>zh_CN</language><item><title>Python3 核心概念回顾</title><link>https://mizuki-sooty.vercel.app/posts/python3-review/</link><guid isPermaLink="true">https://mizuki-sooty.vercel.app/posts/python3-review/</guid><description>回顾 Python3 中字典、列表、函数、模块、推导式、迭代器、生成器、装饰器等核心概念。</description><pubDate>Tue, 24 Feb 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;python回顾&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>少游的博客</title><description>去追寻吧，你所期待的那颗星</description><link>https://mizuki-sooty.vercel.app/</link><language>zh_CN</language><item><title>Python3 核心概念回顾</title><link>https://mizuki-sooty.vercel.app/posts/python3-review/</link><guid isPermaLink="true">https://mizuki-sooty.vercel.app/posts/python3-review/</guid><description>回顾 Python3 中字典、列表、函数、模块、推导式、迭代器、生成器、装饰器等核心概念。</description><pubDate>Wed, 25 Feb 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;python回顾&lt;/h2&gt;
 &lt;p&gt;字典（键与值一一对应），列表（自由的数组），元组（只读列表，成员不变）
 列表需要注意的是extend，appendix，pop等
 字典（列表不可以作为键，因为其需要不可变）&lt;/p&gt;
@@ -286,6 +286,609 @@ print(calculate_tax.__doc__)
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
+</content:encoded></item><item><title>Python3 核心概念精讲：从基础到面向对象</title><link>https://mizuki-sooty.vercel.app/posts/python3-core-guide/</link><guid isPermaLink="true">https://mizuki-sooty.vercel.app/posts/python3-core-guide/</guid><description>系统梳理 Python3 核心概念，深入讲解装饰器机制、面向对象编程思想、异常处理策略，每个知识点配备开发最佳实践。</description><pubDate>Wed, 25 Feb 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Python3 核心概念精讲：从基础到面向对象&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;本文从 Python 的对象模型出发，系统梳理数据结构、函数、装饰器、面向对象、异常处理等核心概念。每个知识点都配有实际开发中的最佳实践，帮助你写出更 Pythonic 的代码。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr /&gt;
+&lt;h2&gt;一、Python 对象模型：一切皆对象&lt;/h2&gt;
+&lt;p&gt;Python 中最重要的认知转变是：&lt;strong&gt;变量不是盒子，而是标签&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;类型（对象）是内存中真实存在的实体，变量只是贴在对象上的名字。这就是为什么 Python 的变量可以随时指向不同类型的对象——因为变量本身没有类型，&lt;strong&gt;对象才有类型&lt;/strong&gt;。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;a = 10       # a 是一个标签，贴在 int 对象 10 上
+a = &quot;hello&quot;  # 同一个标签 a，现在贴到了 str 对象上
+a = [1, 2]   # 又贴到了 list 对象上
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;可变与不可变的本质区别&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;类型&lt;/th&gt;
+&lt;th&gt;不可变 (Immutable)&lt;/th&gt;
+&lt;th&gt;可变 (Mutable)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;代表&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;int&lt;/code&gt;, &lt;code&gt;str&lt;/code&gt;, &lt;code&gt;tuple&lt;/code&gt;, &lt;code&gt;frozenset&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;list&lt;/code&gt;, &lt;code&gt;dict&lt;/code&gt;, &lt;code&gt;set&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;修改行为&lt;/td&gt;
+&lt;td&gt;创建新对象，标签重新指向&lt;/td&gt;
+&lt;td&gt;原地修改同一对象&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;id()&lt;/code&gt; 变化&lt;/td&gt;
+&lt;td&gt;变化（新对象）&lt;/td&gt;
+&lt;td&gt;不变（同一对象）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;pre&gt;&lt;code&gt;# 不可变：重新赋值 = 标签换对象
+a = 10
+print(id(a))  # 140234866423056
+a = 20
+print(id(a))  # 140234866423376 ← 不同的对象
+
+# 可变：修改 = 原地改对象
+b = [1, 2, 3]
+print(id(b))  # 140234851234560
+b.append(4)
+print(id(b))  # 140234851234560 ← 同一个对象！
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://mizuki-sooty.vercel.app/images/python3-core-guide/svg1_python_object_model.svg&quot; alt=&quot;Python 对象模型&quot; /&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;最佳实践：&lt;/strong&gt; 函数参数传递可变对象时，函数内部的修改会影响外部。防御性编程应在函数内部使用 &lt;code&gt;data.copy()&lt;/code&gt; 或切片 &lt;code&gt;data[:]&lt;/code&gt; 创建副本。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr /&gt;
+&lt;h2&gt;二、数据结构速览&lt;/h2&gt;
+&lt;h3&gt;列表 (List)&lt;/h3&gt;
+&lt;p&gt;Python 的列表是动态数组，支持任意类型混合存储。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;fruits = [&quot;apple&quot;, &quot;banana&quot;, &quot;cherry&quot;]
+
+# 常用操作
+fruits.append(&quot;date&quot;)       # 末尾添加
+fruits.extend([&quot;fig&quot;, &quot;grape&quot;])  # 批量追加（注意和 append 的区别）
+fruits.insert(1, &quot;avocado&quot;) # 指定位置插入
+fruits.pop()                # 弹出末尾元素
+fruits.pop(0)               # 弹出指定位置
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;最佳实践：&lt;/strong&gt; &lt;code&gt;append&lt;/code&gt; 添加单个元素，&lt;code&gt;extend&lt;/code&gt; 合并列表。误用 &lt;code&gt;append&lt;/code&gt; 传入列表会产生嵌套：&lt;code&gt;[1, [2, 3]]&lt;/code&gt; 而非 &lt;code&gt;[1, 2, 3]&lt;/code&gt;。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;字典 (Dict)&lt;/h3&gt;
+&lt;p&gt;键值对映射，键必须是不可变类型（因为需要哈希）。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;user = {&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 25}
+
+# 安全取值
+user.get(&quot;email&quot;, &quot;未设置&quot;)  # 不存在时返回默认值，不会抛 KeyError
+
+# Python 3.9+ 合并语法
+defaults = {&quot;theme&quot;: &quot;dark&quot;, &quot;lang&quot;: &quot;zh&quot;}
+config = defaults | user  # 合并字典，右侧优先
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;最佳实践：&lt;/strong&gt; 用 &lt;code&gt;dict.get(key, default)&lt;/code&gt; 替代 &lt;code&gt;dict[key]&lt;/code&gt;，避免 &lt;code&gt;KeyError&lt;/code&gt;。需要带默认值的字典用 &lt;code&gt;collections.defaultdict&lt;/code&gt;。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;元组 (Tuple)&lt;/h3&gt;
+&lt;p&gt;不可变的序列，常用于函数多返回值和作为字典的键。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 函数返回多个值本质是返回元组
+def get_user():
+    return &quot;Alice&quot;, 25, &quot;alice@example.com&quot;
+
+name, age, email = get_user()  # 解包
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;最佳实践：&lt;/strong&gt; 当数据不应被修改时用元组替代列表，既表达意图又略微提升性能。命名元组 &lt;code&gt;collections.namedtuple&lt;/code&gt; 或 &lt;code&gt;typing.NamedTuple&lt;/code&gt; 让元组更具可读性。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr /&gt;
+&lt;h2&gt;三、函数进阶&lt;/h2&gt;
+&lt;h3&gt;参数类型全解&lt;/h3&gt;
+&lt;p&gt;Python 函数参数有四种传递方式，理解它们的优先级和组合规则至关重要：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def example(
+    name,                  # 必备参数（位置参数）
+    age=25,                # 默认参数
+    *args,                 # 可变位置参数 → 打包为元组
+    **kwargs               # 可变关键字参数 → 打包为字典
+):
+    print(f&quot;{name}, {age}&quot;)
+    print(f&quot;额外位置参数: {args}&quot;)
+    print(f&quot;额外关键字参数: {kwargs}&quot;)
+
+example(&quot;Alice&quot;, 30, &quot;extra1&quot;, &quot;extra2&quot;, city=&quot;Beijing&quot;)
+# Alice, 30
+# 额外位置参数: (&apos;extra1&apos;, &apos;extra2&apos;)
+# 额外关键字参数: {&apos;city&apos;: &apos;Beijing&apos;}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;最佳实践：&lt;/strong&gt; 默认参数不要用可变对象！&lt;code&gt;def f(data=[])&lt;/code&gt; 是经典陷阱——所有调用共享同一个列表。正确写法：&lt;code&gt;def f(data=None): data = data or []&lt;/code&gt;。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;作用域与 &lt;code&gt;global&lt;/code&gt; / &lt;code&gt;nonlocal&lt;/code&gt;&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;count = 0
+
+def increment():
+    global count    # 声明使用全局变量
+    count += 1
+
+def outer():
+    x = 10
+    def inner():
+        nonlocal x  # 声明使用外层函数的变量
+        x += 1
+    inner()
+    print(x)  # 11
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;最佳实践：&lt;/strong&gt; 尽量避免 &lt;code&gt;global&lt;/code&gt;，它会让代码难以追踪和测试。如果需要共享状态，用类封装或者依赖注入。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr /&gt;
+&lt;h2&gt;四、模块与包&lt;/h2&gt;
+&lt;h3&gt;&lt;code&gt;import&lt;/code&gt; 的正确姿势&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;# ✗ 不推荐：命名空间污染，不知道函数来自哪里
+from os import *
+
+# ✓ 推荐：明确来源
+import os
+os.path.join(&quot;/home&quot;, &quot;user&quot;)
+
+# ✓ 推荐：只导入需要的
+from os.path import join, exists
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;&lt;code&gt;__name__&lt;/code&gt; 的作用&lt;/h3&gt;
+&lt;p&gt;每个模块都有 &lt;code&gt;__name__&lt;/code&gt; 属性。直接运行时值为 &lt;code&gt;&quot;__main__&quot;&lt;/code&gt;，被导入时值为模块名。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# utils.py
+def helper():
+    return &quot;I&apos;m a helper&quot;
+
+if __name__ == &quot;__main__&quot;:
+    # 只在直接运行 utils.py 时执行
+    # 被其他模块 import 时不会执行
+    print(helper())
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;最佳实践：&lt;/strong&gt; 所有脚本都应该有 &lt;code&gt;if __name__ == &quot;__main__&quot;&lt;/code&gt; 守卫。这样模块既可以被导入复用，也可以独立运行测试。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr /&gt;
+&lt;h2&gt;五、推导式：Pythonic 的数据变换&lt;/h2&gt;
+&lt;p&gt;推导式是 Python 最优雅的特性之一，用一行代码完成数据的过滤和变换：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 列表推导式
+squares = [x**2 for x in range(10) if x % 2 == 0]
+# [0, 4, 16, 36, 64]
+
+# 字典推导式
+word_lengths = {word: len(word) for word in [&quot;hello&quot;, &quot;world&quot;, &quot;python&quot;]}
+# {&apos;hello&apos;: 5, &apos;world&apos;: 5, &apos;python&apos;: 6}
+
+# 集合推导式（自动去重）
+unique_lengths = {len(word) for word in [&quot;hi&quot;, &quot;hello&quot;, &quot;hey&quot;]}
+# {2, 5, 3}
+
+# 生成器表达式（惰性求值，不占内存）
+total = sum(x**2 for x in range(1000000))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;最佳实践：&lt;/strong&gt; 推导式应保持简洁。如果逻辑超过一行或需要多层嵌套，改用普通 &lt;code&gt;for&lt;/code&gt; 循环更易读。嵌套推导式超过两层就是代码异味。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr /&gt;
+&lt;h2&gt;六、迭代器与生成器&lt;/h2&gt;
+&lt;h3&gt;迭代器协议&lt;/h3&gt;
+&lt;p&gt;任何实现了 &lt;code&gt;__iter__()&lt;/code&gt; 和 &lt;code&gt;__next__()&lt;/code&gt; 方法的对象都是迭代器。&lt;code&gt;for&lt;/code&gt; 循环的本质就是不断调用 &lt;code&gt;next()&lt;/code&gt; 直到 &lt;code&gt;StopIteration&lt;/code&gt;。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;nums = [1, 2, 3]
+it = iter(nums)       # 获取迭代器
+print(next(it))       # 1
+print(next(it))       # 2
+print(next(it))       # 3
+# next(it)            # StopIteration!
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;生成器：优雅的迭代器&lt;/h3&gt;
+&lt;p&gt;生成器是创建迭代器的简洁方式。函数中包含 &lt;code&gt;yield&lt;/code&gt; 关键字就自动变成生成器函数。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;yield&lt;/code&gt; 的三个关键行为：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;产出值并暂停&lt;/strong&gt; — 返回值给调用者，然后冻结在当前位置&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;保留运行状态&lt;/strong&gt; — 所有局部变量、执行位置都被保存&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;恢复执行&lt;/strong&gt; — 下次 &lt;code&gt;next()&lt;/code&gt; 从暂停处继续&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;def countdown(n):
+    while n &amp;gt; 0:
+        yield n    # 产出 n，暂停
+        n -= 1     # 下次 next() 从这里继续
+
+gen = countdown(5)
+print(next(gen))  # 5
+print(next(gen))  # 4
+
+for val in gen:   # 继续迭代剩余的
+    print(val)    # 3, 2, 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://mizuki-sooty.vercel.app/images/python3-core-guide/svg5_iterator_generator.svg&quot; alt=&quot;迭代器 vs 生成器&quot; /&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;最佳实践：&lt;/strong&gt; 处理大数据集时，生成器是救星。读取 10GB 日志文件：用 &lt;code&gt;for line in open(&quot;huge.log&quot;)&lt;/code&gt; 而非 &lt;code&gt;open(&quot;huge.log&quot;).readlines()&lt;/code&gt;，前者逐行生成，后者一次性加载到内存。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr /&gt;
+&lt;h2&gt;七、with 语句与上下文管理器&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;with&lt;/code&gt; 语句确保资源（文件、锁、连接）在使用后被正确释放，即使发生异常。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 文件操作：with 自动关闭文件
+with open(&quot;data.txt&quot;, &quot;r&quot;) as f:
+    content = f.read()
+# 离开 with 块后，f 自动关闭，即使中间抛了异常
+
+# 同时管理多个资源
+with open(&quot;input.txt&quot;) as infile, open(&quot;output.txt&quot;, &quot;w&quot;) as outfile:
+    outfile.write(infile.read().upper())
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;自定义上下文管理器&lt;/h3&gt;
+&lt;p&gt;实现 &lt;code&gt;__enter__&lt;/code&gt; 和 &lt;code&gt;__exit__&lt;/code&gt; 方法，或使用 &lt;code&gt;contextlib.contextmanager&lt;/code&gt; 装饰器：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;from contextlib import contextmanager
+import time
+
+@contextmanager
+def timer(label):
+    start = time.perf_counter()
+    yield  # 这里是 with 块内的代码执行点
+    elapsed = time.perf_counter() - start
+    print(f&quot;{label}: {elapsed:.4f}s&quot;)
+
+with timer(&quot;数据处理&quot;):
+    data = [x**2 for x in range(1000000)]
+# 输出: 数据处理: 0.0823s
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;最佳实践：&lt;/strong&gt; 任何需要&quot;获取-使用-释放&quot;模式的场景都应该用 &lt;code&gt;with&lt;/code&gt;：文件、数据库连接、线程锁、临时目录。&lt;code&gt;contextlib&lt;/code&gt; 模块提供了 &lt;code&gt;suppress&lt;/code&gt;、&lt;code&gt;redirect_stdout&lt;/code&gt; 等实用工具。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr /&gt;
+&lt;h2&gt;八、Lambda 表达式&lt;/h2&gt;
+&lt;p&gt;Lambda 是匿名的单行函数，适合作为高阶函数的参数：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 排序：按字典的 age 字段
+users = [{&quot;name&quot;: &quot;Bob&quot;, &quot;age&quot;: 30}, {&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 25}]
+sorted_users = sorted(users, key=lambda u: u[&quot;age&quot;])
+
+# 配合 map/filter
+numbers = [1, 2, 3, 4, 5]
+squared = list(map(lambda x: x**2, numbers))      # [1, 4, 9, 16, 25]
+evens = list(filter(lambda x: x % 2 == 0, numbers))  # [2, 4]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;最佳实践：&lt;/strong&gt; Lambda 只用于简单的单行逻辑。如果需要多行或复杂逻辑，定义具名函数更清晰。PEP 8 明确建议不要把 lambda 赋值给变量（&lt;code&gt;f = lambda x: x+1&lt;/code&gt;），直接用 &lt;code&gt;def&lt;/code&gt; 。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr /&gt;
+&lt;h2&gt;九、装饰器深入&lt;/h2&gt;
+&lt;p&gt;装饰器是 Python 最强大的元编程工具之一。它允许在不修改原函数代码的前提下，动态增强函数的功能。&lt;/p&gt;
+&lt;h3&gt;函数装饰器的本质&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;@decorator&lt;/code&gt; 是语法糖，等价于 &lt;code&gt;func = decorator(func)&lt;/code&gt;。装饰器接收一个函数，返回一个新函数（通常是 &lt;code&gt;wrapper&lt;/code&gt;）。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import functools
+
+def log_calls(func):
+    @functools.wraps(func)  # 保留原函数的元信息
+    def wrapper(*args, **kwargs):
+        print(f&quot;→ 调用 {func.__name__}({args}, {kwargs})&quot;)
+        result = func(*args, **kwargs)
+        print(f&quot;← {func.__name__} 返回 {result}&quot;)
+        return result
+    return wrapper
+
+@log_calls
+def add(a, b):
+    &quot;&quot;&quot;两数相加&quot;&quot;&quot;
+    return a + b
+
+add(3, 5)
+# → 调用 add((3, 5), {})
+# ← add 返回 8
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;理解 &lt;code&gt;return wrapper&lt;/code&gt; vs &lt;code&gt;return wrapper()&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;这是初学者最容易混淆的点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;return wrapper&lt;/code&gt; — 返回函数本体（遥控器），以后调用时才执行&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;return wrapper()&lt;/code&gt; — 立即执行函数，返回执行结果&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;装饰器必须返回函数本体，否则装饰后的函数就不是函数了。&lt;/p&gt;
+&lt;h3&gt;带参数的装饰器（三层嵌套）&lt;/h3&gt;
+&lt;p&gt;当装饰器本身需要接收参数时，需要多包一层：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import functools
+
+def retry(max_times=3, delay=1):
+    &quot;&quot;&quot;带参数的重试装饰器&quot;&quot;&quot;
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            for attempt in range(1, max_times + 1):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    print(f&quot;第 {attempt} 次失败: {e}&quot;)
+                    if attempt == max_times:
+                        raise
+                    time.sleep(delay)
+        return wrapper
+    return decorator
+
+@retry(max_times=3, delay=2)
+def fetch_data(url):
+    # 网络请求逻辑...
+    pass
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;用类实现装饰器&lt;/h3&gt;
+&lt;p&gt;当装饰器需要管理复杂状态（如计数、缓存）时，用类实现更清晰：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class CallCounter:
+    def __init__(self, func):
+        functools.update_wrapper(self, func)
+        self.func = func
+        self.count = 0
+
+    def __call__(self, *args, **kwargs):
+        self.count += 1
+        print(f&quot;{self.func.__name__} 已被调用 {self.count} 次&quot;)
+        return self.func(*args, **kwargs)
+
+@CallCounter
+def process():
+    pass
+
+process()  # process 已被调用 1 次
+process()  # process 已被调用 2 次
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;__call__&lt;/code&gt; 方法让类的实例可以像函数一样被调用，它就是类装饰器中的 &lt;code&gt;wrapper&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://mizuki-sooty.vercel.app/images/python3-core-guide/svg2_decorator_mechanism.svg&quot; alt=&quot;装饰器执行机制&quot; /&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;最佳实践：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;始终使用 &lt;code&gt;@functools.wraps(func)&lt;/code&gt;&lt;/strong&gt; — 保留原函数的 &lt;code&gt;__name__&lt;/code&gt;、&lt;code&gt;__doc__&lt;/code&gt; 等元信息&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;wrapper 必须接受 &lt;code&gt;*args, **kwargs&lt;/code&gt;&lt;/strong&gt; — 确保兼容任意函数签名&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;常用内置装饰器：&lt;/strong&gt; &lt;code&gt;@property&lt;/code&gt;、&lt;code&gt;@classmethod&lt;/code&gt;、&lt;code&gt;@staticmethod&lt;/code&gt;、&lt;code&gt;@functools.lru_cache&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;hr /&gt;
+&lt;h2&gt;十、面向对象编程&lt;/h2&gt;
+&lt;p&gt;面向对象是 Python 的核心编程范式。Python 的 OOP 哲学可以用一句话概括：&lt;strong&gt;一切皆对象，鸭子类型优先&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3&gt;类的基本结构&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;class User:
+    &quot;&quot;&quot;用户类&quot;&quot;&quot;
+    # 类属性：所有实例共享
+    platform = &quot;MyApp&quot;
+
+    def __init__(self, name: str, email: str):
+        # 实例属性：每个实例独立
+        self.name = name
+        self.email = email
+        self._login_count = 0       # 约定私有（单下划线）
+        self.__password_hash = &quot;&quot;   # 名称改写（双下划线）
+
+    def login(self):
+        &quot;&quot;&quot;普通方法：操作实例状态&quot;&quot;&quot;
+        self._login_count += 1
+        return f&quot;{self.name} 登录成功（第 {self._login_count} 次）&quot;
+
+    @property
+    def login_count(self):
+        &quot;&quot;&quot;属性装饰器：像属性一样访问，但有控制逻辑&quot;&quot;&quot;
+        return self._login_count
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        &quot;&quot;&quot;类方法：备用构造函数&quot;&quot;&quot;
+        return cls(data[&quot;name&quot;], data[&quot;email&quot;])
+
+    @staticmethod
+    def validate_email(email: str) -&amp;gt; bool:
+        &quot;&quot;&quot;静态方法：纯工具函数&quot;&quot;&quot;
+        return &quot;@&quot; in email and &quot;.&quot; in email
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;封装：保护数据完整性&lt;/h3&gt;
+&lt;p&gt;Python 没有真正的 &lt;code&gt;private&lt;/code&gt; 关键字，而是通过命名约定实现封装：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;_name&lt;/code&gt; — 约定私有，外部不应直接访问（但技术上可以）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;__name&lt;/code&gt; — 名称改写（Name Mangling），变成 &lt;code&gt;_ClassName__name&lt;/code&gt;，更强的保护&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;name_&lt;/code&gt; — 避免与关键字冲突，如 &lt;code&gt;class_&lt;/code&gt;、&lt;code&gt;type_&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;class BankAccount:
+    def __init__(self, balance: float):
+        self.__balance = balance  # 双下划线保护
+
+    @property
+    def balance(self) -&amp;gt; float:
+        &quot;&quot;&quot;只读属性&quot;&quot;&quot;
+        return self.__balance
+
+    def deposit(self, amount: float):
+        if amount &amp;lt;= 0:
+            raise ValueError(&quot;存款金额必须为正数&quot;)
+        self.__balance += amount
+
+    def withdraw(self, amount: float):
+        if amount &amp;gt; self.__balance:
+            raise ValueError(&quot;余额不足&quot;)
+        self.__balance -= amount
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;继承与方法重写&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;class Animal:
+    def __init__(self, name: str):
+        self.name = name
+
+    def speak(self) -&amp;gt; str:
+        raise NotImplementedError(&quot;子类必须实现 speak 方法&quot;)
+
+class Dog(Animal):
+    def speak(self) -&amp;gt; str:
+        return f&quot;{self.name}: 汪汪！&quot;
+
+class Cat(Animal):
+    def speak(self) -&amp;gt; str:
+        return f&quot;{self.name}: 喵~&quot;
+
+# 多态：同一接口，不同行为
+animals = [Dog(&quot;旺财&quot;), Cat(&quot;咪咪&quot;)]
+for animal in animals:
+    print(animal.speak())
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;多继承与 MRO&lt;/h3&gt;
+&lt;p&gt;Python 支持多继承，方法解析顺序（MRO）遵循 C3 线性化算法：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class A:
+    def greet(self):
+        return &quot;A&quot;
+
+class B(A):
+    def greet(self):
+        return &quot;B&quot;
+
+class C(A):
+    def greet(self):
+        return &quot;C&quot;
+
+class D(B, C):
+    pass
+
+d = D()
+print(d.greet())       # &quot;B&quot; — 按 MRO 顺序
+print(D.__mro__)       # (D, B, C, A, object)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;&lt;code&gt;super()&lt;/code&gt; 的正确用法&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;class Student(User):
+    def __init__(self, name: str, email: str, grade: int):
+        super().__init__(name, email)  # 调用父类构造
+        self.grade = grade
+
+    def login(self):
+        result = super().login()  # 调用父类方法
+        return f&quot;{result}（学生用户）&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;鸭子类型：Python 的多态哲学&lt;/h3&gt;
+&lt;p&gt;Python 不需要显式的接口声明。只要对象有正确的方法，就可以使用：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class FileLogger:
+    def write(self, msg):
+        with open(&quot;app.log&quot;, &quot;a&quot;) as f:
+            f.write(msg + &quot;\n&quot;)
+
+class ConsoleLogger:
+    def write(self, msg):
+        print(f&quot;[LOG] {msg}&quot;)
+
+def log_message(logger, msg):
+    &quot;&quot;&quot;不关心 logger 的类型，只要有 write 方法就行&quot;&quot;&quot;
+    logger.write(msg)
+
+# 两种 logger 都能用，这就是鸭子类型
+log_message(FileLogger(), &quot;保存到文件&quot;)
+log_message(ConsoleLogger(), &quot;打印到控制台&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://mizuki-sooty.vercel.app/images/python3-core-guide/svg3_oop_three_pillars.svg&quot; alt=&quot;面向对象三大支柱&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://mizuki-sooty.vercel.app/images/python3-core-guide/svg6_class_decorators.svg&quot; alt=&quot;类方法装饰器对比&quot; /&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;最佳实践：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;优先组合而非继承&lt;/strong&gt; — 继承层级不超过 3 层，复杂关系用 &quot;has-a&quot; 替代 &quot;is-a&quot;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;使用 ABC 定义接口&lt;/strong&gt; — &lt;code&gt;from abc import ABC, abstractmethod&lt;/code&gt; 强制子类实现特定方法&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;单一职责&lt;/strong&gt; — 每个类只做一件事，如果类名里有 &quot;And&quot;，说明该拆分了&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;用 &lt;code&gt;dataclass&lt;/code&gt; 简化数据类&lt;/strong&gt; — Python 3.7+ 的 &lt;code&gt;@dataclass&lt;/code&gt; 自动生成 &lt;code&gt;__init__&lt;/code&gt;、&lt;code&gt;__repr__&lt;/code&gt; 等&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;hr /&gt;
+&lt;h2&gt;十一、异常处理&lt;/h2&gt;
+&lt;p&gt;在 AI 辅助编程时代，Debug 能力是重中之重。异常处理不仅是捕获错误，更是一种防御性编程策略。&lt;/p&gt;
+&lt;h3&gt;完整的异常处理结构&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;try:
+    result = 10 / int(input(&quot;输入除数: &quot;))
+except ValueError:
+    print(&quot;请输入有效的数字&quot;)
+except ZeroDivisionError:
+    print(&quot;除数不能为零&quot;)
+except Exception as e:
+    print(f&quot;未预期的错误: {e}&quot;)
+else:
+    # 只在 try 块没有异常时执行
+    print(f&quot;结果: {result}&quot;)
+finally:
+    # 无论如何都会执行（资源清理）
+    print(&quot;计算结束&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;异常的传播规则&lt;/h3&gt;
+&lt;p&gt;如果异常在 &lt;code&gt;try&lt;/code&gt;（或 &lt;code&gt;except&lt;/code&gt;、&lt;code&gt;else&lt;/code&gt;）中被抛出，且没有被任何 &lt;code&gt;except&lt;/code&gt; 捕获，它会在 &lt;code&gt;finally&lt;/code&gt; 执行完毕后继续向上传播。&lt;/p&gt;
+&lt;h3&gt;自定义异常&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;class AppError(Exception):
+    &quot;&quot;&quot;应用基础异常&quot;&quot;&quot;
+    pass
+
+class ValidationError(AppError):
+    &quot;&quot;&quot;数据验证异常&quot;&quot;&quot;
+    def __init__(self, field: str, message: str):
+        self.field = field
+        self.message = message
+        super().__init__(f&quot;{field}: {message}&quot;)
+
+class NotFoundError(AppError):
+    &quot;&quot;&quot;资源未找到&quot;&quot;&quot;
+    pass
+
+# 使用
+def create_user(name: str, age: int):
+    if not name:
+        raise ValidationError(&quot;name&quot;, &quot;用户名不能为空&quot;)
+    if age &amp;lt; 0 or age &amp;gt; 150:
+        raise ValidationError(&quot;age&quot;, &quot;年龄必须在 0-150 之间&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;&lt;code&gt;raise&lt;/code&gt; 的三种用法&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;# 1. 抛出新异常
+raise ValueError(&quot;无效的输入&quot;)
+
+# 2. 重新抛出当前异常（保留原始堆栈）
+try:
+    risky_operation()
+except Exception:
+    logging.error(&quot;操作失败&quot;)
+    raise  # 不带参数，原样抛出
+
+# 3. 异常链（Python 3）
+try:
+    data = json.loads(raw)
+except json.JSONDecodeError as e:
+    raise ValidationError(&quot;data&quot;, &quot;JSON 格式错误&quot;) from e
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://mizuki-sooty.vercel.app/images/python3-core-guide/svg4_exception_handling.svg&quot; alt=&quot;异常处理流程&quot; /&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;最佳实践：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;永远不要裸 &lt;code&gt;except:&lt;/code&gt;&lt;/strong&gt; — 至少用 &lt;code&gt;except Exception&lt;/code&gt;，否则会吞掉 &lt;code&gt;KeyboardInterrupt&lt;/code&gt; 和 &lt;code&gt;SystemExit&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;精确捕获&lt;/strong&gt; — &lt;code&gt;except ValueError&lt;/code&gt; 优于 &lt;code&gt;except Exception&lt;/code&gt;，只处理你知道如何处理的异常&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;自定义异常继承 &lt;code&gt;Exception&lt;/code&gt;&lt;/strong&gt; — 不要继承 &lt;code&gt;BaseException&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;用 &lt;code&gt;raise ... from e&lt;/code&gt; 保留异常链&lt;/strong&gt; — 方便调试时追溯根因&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;日志记录用 &lt;code&gt;logging.exception()&lt;/code&gt;&lt;/strong&gt; — 自动包含堆栈信息&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;hr /&gt;
+&lt;h2&gt;十二、类型注解&lt;/h2&gt;
+&lt;p&gt;Python 3.5+ 引入的类型注解不影响运行时行为，但能极大提升代码可读性和 IDE 支持：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;from typing import Optional, Union
+
+def find_user(user_id: int) -&amp;gt; Optional[dict]:
+    &quot;&quot;&quot;查找用户，不存在返回 None&quot;&quot;&quot;
+    ...
+
+def process(data: list[dict[str, Union[str, int]]]) -&amp;gt; float:
+    &quot;&quot;&quot;处理数据列表&quot;&quot;&quot;
+    ...
+
+# Python 3.10+ 更简洁的语法
+def greet(name: str | None = None) -&amp;gt; str:
+    return f&quot;Hello, {name or &apos;World&apos;}&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;最佳实践：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;渐进式采用&lt;/strong&gt; — 从公共接口和复杂函数开始，不需要一次性全部注解&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;配合 mypy 使用&lt;/strong&gt; — &lt;code&gt;pip install mypy &amp;amp;&amp;amp; mypy your_project/&lt;/code&gt; 静态类型检查&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;避免过度注解&lt;/strong&gt; — &lt;code&gt;x: int = 5&lt;/code&gt; 是多余的，类型显而易见时可以省略&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;hr /&gt;
+&lt;h2&gt;总结&lt;/h2&gt;
+&lt;p&gt;Python 的核心哲学是 &lt;strong&gt;&quot;简洁优于复杂，可读性至上&quot;&lt;/strong&gt;。掌握这些核心概念后，关键是在实际项目中不断实践：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;对象模型&lt;/strong&gt; 让你理解 Python 的运行机制&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;装饰器&lt;/strong&gt; 让你写出优雅的横切关注点代码&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;面向对象&lt;/strong&gt; 让你构建可维护的大型系统&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;异常处理&lt;/strong&gt; 让你的代码在生产环境中稳健运行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;记住：Pythonic 的代码不是炫技，而是让下一个读代码的人（包括未来的你）能快速理解意图。&lt;/p&gt;
 </content:encoded></item><item><title>Git 实战指南：从分支管理到远程协作</title><link>https://mizuki-sooty.vercel.app/posts/git-practice-guide/</link><guid isPermaLink="true">https://mizuki-sooty.vercel.app/posts/git-practice-guide/</guid><description>从真实开发场景出发，梳理 Git 在分支管理、合并策略、撤销操作与远程协作中的核心实践。</description><pubDate>Tue, 24 Feb 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Git 实战指南：从分支管理到远程协作&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;本文从实际开发场景出发，梳理 Git 在日常工作中最常遇到的操作与决策。不讲花哨技巧，只聚焦「遇到这种情况该怎么办」。&lt;/p&gt;
