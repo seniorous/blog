@@ -128,6 +128,7 @@ export async function GET({
 		year: "numeric",
 		month: "short",
 		day: "numeric",
+		timeZone: "Asia/Shanghai",
 	});
 
 	const description = post.data.description;

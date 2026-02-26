@@ -1,6 +1,7 @@
 import type { CollectionEntry } from "astro:content";
 import { permalinkConfig } from "../config";
 import { removeFileExtension } from "./url-utils";
+import { toUTC8 } from "./date-utils";
 
 // 文章 ID 映射缓存（用于存储按时间排序后的文章序号）
 let postIdMap: Map<string, number> | null = null;
@@ -90,22 +91,25 @@ export function generatePermalinkSlug(post: CollectionEntry<"posts">): string {
 	const postname = removeFileExtension(post.id);
 	const category = post.data.category || "uncategorized";
 
+	// 使用 UTC+8 时区提取日期部分
+	const pub8 = toUTC8(published);
+
 	// 替换占位符
 	const slug = format
-		.replace(/%year%/g, published.getFullYear().toString())
+		.replace(/%year%/g, pub8.getUTCFullYear().toString())
 		.replace(
 			/%monthnum%/g,
-			(published.getMonth() + 1).toString().padStart(2, "0"),
+			(pub8.getUTCMonth() + 1).toString().padStart(2, "0"),
 		)
-		.replace(/%day%/g, published.getDate().toString().padStart(2, "0"))
-		.replace(/%hour%/g, published.getHours().toString().padStart(2, "0"))
+		.replace(/%day%/g, pub8.getUTCDate().toString().padStart(2, "0"))
+		.replace(/%hour%/g, pub8.getUTCHours().toString().padStart(2, "0"))
 		.replace(
 			/%minute%/g,
-			published.getMinutes().toString().padStart(2, "0"),
+			pub8.getUTCMinutes().toString().padStart(2, "0"),
 		)
 		.replace(
 			/%second%/g,
-			published.getSeconds().toString().padStart(2, "0"),
+			pub8.getUTCSeconds().toString().padStart(2, "0"),
 		)
 		.replace(/%post_id%/g, getPostNumericId(post.id).toString())
 		.replace(/%postname%/g, postname)
