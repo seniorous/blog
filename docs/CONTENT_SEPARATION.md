@@ -367,7 +367,7 @@ CONTENT_REPO_URL=https://YOUR_TOKEN@github.com/your-username/Mizuki-Content-Priv
 |------|------|
 | `pnpm run init-content` | 运行交互式初始化向导 |
 | `pnpm run sync-content` | 手动同步内容仓库 |
-| `pnpm run check-env` | 检查环境变量配置 |
+| `pnpm check` | 检查站点配置与 Astro 诊断 |
 | `pnpm dev` | 启动开发服务器 (自动同步) |
 | `pnpm build` | 构建项目 (自动同步) |
 
@@ -456,7 +456,7 @@ ssh -T git@github.com
 
 4. 运行检查命令
    ```bash
-   pnpm run check-env
+   pnpm check
    ```
 
 ### 问题 5: 内容同步失败
@@ -512,14 +512,14 @@ git clone https://github.com/your-username/Mizuki-Content.git content
 
 - [内容迁移指南](./CONTENT_MIGRATION.md) - 如何从单仓库迁移到分离模式
 - [内容仓库结构](./CONTENT_REPOSITORY.md) - 内容仓库的推荐结构
-- [主 README](../README.zh.md) - 项目总体说明
+- [主 README](../README.md) - 项目总体说明
 
 ---
 
 ## 🤝 需要帮助?
 
-- 查看 [GitHub Issues](https://github.com/matsuzaka-yuki/Mizuki/issues)
-- 阅读 [完整文档](../README.zh.md)
-- 运行 `pnpm run check-env` 检查配置
+- 查看 [GitHub Issues](https://github.com/seniorous/blog/issues)
+- 阅读 [完整文档](../README.md)
+- 运行 `pnpm check` 检查配置
 
 祝你使用愉快! 🎉

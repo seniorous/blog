@@ -246,7 +246,7 @@ A: 检查:
 4. `CONTENT_REPO_URL` 是否正确
 5. 是否有足够的磁盘空间
 
-运行 `pnpm run check-env` 检查配置。
+运行 `pnpm check` 检查配置。
 
 ### Q: 符号链接在 Windows 上不工作?
 

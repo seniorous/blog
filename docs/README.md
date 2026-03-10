@@ -1,22 +1,22 @@
 # Mizuki 文档索引
 
-欢迎查阅 Mizuki 的详细文档！
+欢迎查阅这个博客仓库的详细文档。
 
 ## 📚 文档列表
 
 ### 核心文档
 
-- **[../README.zh.md](../README.zh.md)** - 项目主文档 (简体中文)
-  - 快速开始
-  - 功能特性
-  - 基础配置
-  - 常见问题
+- **[../README.md](../README.md)** - 仓库主说明
+  - 本地开发
+  - 常用命令
+  - 目录结构
+  - 部署方式
 
-### 多语言文档
-
-- **[../README.md](../README.md)** - English
-- **[../README.ja.md](../README.ja.md)** - 日本語  
-- **[../README.tw.md](../README.tw.md)** - 繁體中文
+- **[BLOG_MAINTENANCE_GUIDE.md](./BLOG_MAINTENANCE_GUIDE.md)** - 博客维护指南
+  - 哪些文件可以直接修改
+  - 哪些地方需要谨慎修改
+  - 主要功能模块
+  - 推荐改造顺序
 
 ### 内容分离相关
 
@@ -52,7 +52,7 @@
 ## 🚀 快速查找
 
 ### 我是新手，想快速开始
-→ 阅读 [主 README](../README.zh.md)
+→ 阅读 [主 README](../README.md)
 
 ### 我想部署博客
 → 阅读 [部署指南](./DEPLOYMENT.md)
@@ -92,9 +92,10 @@ docs/
 
 ### 新用户推荐阅读顺序
 
-1. [主 README](../README.zh.md) - 了解项目基本情况
-2. [部署指南](./DEPLOYMENT.md) - 选择平台并部署
-3. (可选) [内容分离指南](./CONTENT_SEPARATION.md) - 高级功能
+1. [主 README](../README.md) - 了解项目基本情况
+2. [博客维护指南](./BLOG_MAINTENANCE_GUIDE.md) - 了解可修改范围
+3. [部署指南](./DEPLOYMENT.md) - 选择平台并部署
+4. (可选) [内容分离指南](./CONTENT_SEPARATION.md) - 高级功能
 
 ### 高级用户推荐
 
@@ -103,8 +104,8 @@ docs/
 
 ## 🤝 需要帮助？
 
-- 查看 [GitHub Issues](https://github.com/matsuzaka-yuki/Mizuki/issues)
+- 查看 [GitHub Issues](https://github.com/seniorous/blog/issues)
 - 阅读相关文档的故障排查章节
-- 运行 `pnpm run check-env` 检查配置
+- 运行 `pnpm check` 检查配置
 
 祝你使用愉快！🎉
